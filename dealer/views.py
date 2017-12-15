@@ -5,11 +5,15 @@ import pandas as pd
 from django.utils.encoding import smart_str
 import os
 import dealer
+import django.middleware.csrf
 # Create your views here.
 
 def index(requests):
 	output = autos.objects.all()
 	return render(requests, 'dealer/index.html', context={'output':output},)
+
+def test_form(requests):
+	return render(requests, 'dealer/test_form.html', context={'csrf': django.middleware.csrf.get_token(request)}, )
 
 def excelgen(requests):
 
@@ -24,6 +28,25 @@ def excelgen(requests):
 
 	response = HttpResponse(content_type='application/vnd.ms-excel')
 	#response['Content-Disposition'] = 'attachment; filename=Report.xlsx'
-	response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
 	response['X-Sendfile'] = smart_str(pth)
+	response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(filename)
 	return response
+
+
+def create_new(requests):
+	return False
+
+def update_new(requests):
+	if request.method == "POST":
+		update_req = autos.objects.get(id=requests.id)
+		update_req.auto_id = requests.auto_id
+		update_req.auto_man = requests.auto_man
+		update_req.year = requests.year
+		update_req.active = requests.active
+		update_req.dealer_id = requests.dealer_id
+
+		update_req.save()
+		return "Record Updated"
+
+def delete_new(requests):
+	return False
