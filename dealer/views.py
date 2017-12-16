@@ -34,7 +34,7 @@ def excelgen(requests):
 
 
 def create_new(requests):
-	return False
+	return HttpResponse("SuccessFromViews")
 
 def update_new(requests):
 	if request.method == "POST":
