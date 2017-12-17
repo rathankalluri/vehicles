@@ -37,16 +37,18 @@ def create_new(requests):
 	return HttpResponse("SuccessFromViews")
 
 def update_new(requests):
-	if request.method == "POST":
-		update_req = autos.objects.get(id=requests.id)
-		update_req.auto_id = requests.auto_id
-		update_req.auto_man = requests.auto_man
-		update_req.year = requests.year
-		update_req.active = requests.active
-		update_req.dealer_id = requests.dealer_id
+	if requests.method == "POST":
+		update_req = autos.objects.get(id=requests.POST.get('id'))
+		update_req.auto_id = requests.POST.get('auto_id')
+		update_req.auto_man = requests.POST.get('auto_man')
+		update_req.year = requests.POST.get('year')
+		update_req.active = requests.POST.get('active')
+		update_req.dealer_id = requests.POST.get('dealer_id')
 
 		update_req.save()
-		return "Record Updated"
+		return HttpResponse("Successfully Updated")
 
 def delete_new(requests):
-	return False
+	if requests.method == "POST":
+		autos.objects.filter(id=requests.POST.get('id')).delete()
+		return HttpResponse("Successfully Deleted")
