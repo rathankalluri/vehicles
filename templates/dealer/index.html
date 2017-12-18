@@ -9,6 +9,13 @@
 <!-- <script src="/static/jquery.cookie.js"> </script> -->
 <script>
     $(document).ready(function(){
+
+    $('#a_year').attr({ "max" : (new Date()).getFullYear()
+
+    });
+    $('#c_year').attr({ "max" : (new Date()).getFullYear()
+
+    });
     $("[data-toggle=tooltip]").tooltip();
     //EDIT ROW
     $(".btn[data-target='#edit']").click(function() {
@@ -88,6 +95,43 @@
 
      });
 
+    //CREATE NEW
+
+    $( "#createSubmit" ).click(function() {
+        if($('#c_active').is(":checked")){
+                    var cact = 1
+            }else{
+                    var cact = 0
+            }
+        console.log(cact)
+        console.log($('#c_auto_id').val())
+        console.log($('#c_auto_man').val())
+        console.log($('#c_year').val())
+        console.log($('#c_dealer_id').val())
+
+        //On modal click Update
+		//Update the table row AJAX
+		$.ajax({
+			type: 'POST',
+			url: "create_new/",
+			data: {
+				//'id': $('#a_id').val(),
+				'auto_id': $('#c_auto_id').val(),
+				'auto_man': $('#c_auto_man').val(),
+				'year':$('#c_year').val(),
+				'active': cact,
+				'dealer_id': $('#c_dealer_id').val(),
+				'csrfmiddlewaretoken': '{{ csrf_token }}',
+			},
+			success: function(msg){
+				console.log(msg)
+				location.reload();
+			}
+		});
+
+		//Create the table end
+    });
+
 });
 </script>
 </head>
@@ -97,7 +141,10 @@
 
 
         <div class="col-md-12">
-        <h4>Bootstrap Snipp for Datatable</h4>
+            <p>&nbsp;</p>
+            <div><span class="text-left"><h4>Vehicle Data POC</h4></span>
+            <span><button class="btn btn-primary btn-xs pull-right" data-title="Create" data-toggle="modal" data-target="#create" onclick="">Create New</button></span>
+            </div>
         <div class="table-responsive">
 
 
@@ -136,10 +183,10 @@
 
 <div class="clearfix"></div>
 
-            <div><a href=""> Download as Excel</a></div>
+            <div><a href="excelgen/"> Download as Excel</a></div>
 
             </div>
-
+    <p>&nbsp;</p>
         </div>
 	</div>
 </div>
@@ -159,7 +206,7 @@
         <input class="form-control " type="text" id="a_id" hidden>
         </div>
           <div class="form-group">
-        <input class="form-control " type="text" placeholder= "Auto_id" id="a_auto_id">
+        <input class="form-control " type="text" placeholder= "Auto_id" id="a_auto_id" maxlength="5">
         </div>
         <div class="form-group">
 
@@ -167,7 +214,7 @@
         </div>
           <div class="form-group">
 
-        <input class="form-control " type="text" placeholder="Year_of_Manufacture" id="a_year">
+        <input class="form-control " type="number" placeholder="Year_of_Manufacture" id="a_year" min="1900" max="">
         </div>
         <div class="form-group">Is Active :
         <input class="form-control" type="checkbox" checked data-toggle="toggle" data-size="small" data-onstyle="primary" data-offstyle="warning" data-on="Yes" data-off="No" id="a_active">
@@ -176,7 +223,7 @@
         </div>
 
         <div class="form-group">
-        <input class="form-control " type="text" placeholder="Dealer_ID" id="a_dealer_id">
+        <input class="form-control " type="text" placeholder="Dealer_ID" id="a_dealer_id" maxlength="5">
         </div>
       </div>
           <div class="modal-footer ">
@@ -211,5 +258,48 @@
   </div>
       <!-- /.modal-dialog -->
     </div>
+<!-- CREATE NEW -->
+
+<div class="modal fade" id="create" tabindex="-1" role="dialog" aria-labelledby="create" aria-hidden="true">
+      <div class="modal-dialog">
+    <div class="modal-content">
+          <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+        <h4 class="modal-title custom_align" id="Heading">Create New Record</h4>
+      </div>
+          <div class="modal-body">
+          <!-- <div class="form-group">
+        <input class="form-control " type="text" id="c_id" hidden>
+        </div> -->
+          <div class="form-group">
+        <input class="form-control " type="text" placeholder= "Auto_id" id="c_auto_id" maxlength="5">
+        </div>
+        <div class="form-group">
+
+        <input class="form-control " type="text" placeholder="Auto_Manufacturer" id="c_auto_man">
+        </div>
+          <div class="form-group">
+
+        <input class="form-control " type="text" placeholder="Year_of_Manufacture" id="c_year" min="1900" max="">
+        </div>
+        <div class="form-group">Is Active :
+        <input class="form-control" type="checkbox" checked data-toggle="toggle" data-size="small" data-onstyle="primary" data-offstyle="warning" data-on="Yes" data-off="No" id="c_active">
+
+        <!-- <input class="form-control" type="text" placeholder="Active" id="a_active"> -->
+        </div>
+
+        <div class="form-group">
+        <input class="form-control " type="text" placeholder="Dealer_ID" id="c_dealer_id" maxlength="5">
+        </div>
+      </div>
+          <div class="modal-footer ">
+        <button type="button" id="createSubmit" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span>Create</button>
+      </div>
+        </div>
+    <!-- /.modal-content -->
+  </div>
+      <!-- /.modal-dialog -->
+    </div>
+
 </body>
 <html>
