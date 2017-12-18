@@ -23,11 +23,10 @@ def excelgen(requests):
 	df.to_excel(writer, 'Sheet1')
 	writer.save()
 
-	path = os.getcwd()+'/'+filename
-	file = open(path)
-	response = HttpResponse(file.read(), content_type='application/vnd.ms-excel')
-	response['Content-Disposition'] = 'attachment; filename=' + filename
-	response['Content-Type'] = 'application/vnd.ms-excel; charset=utf-16'
+	path = os.getcwd()+'\\'+filename
+	file = open(path, "rb")
+	response = HttpResponse(file.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+	response['Content-Disposition'] = 'attachment; filename=report.xlsx'
 	return response
 
 def create_new(requests):
@@ -62,5 +61,3 @@ def delete_new(requests):
 def detail(requests, dealer_id, active):
 	output = autos.objects.filter(dealer_id=dealer_id,active=active)
 	return render(requests, 'dealer/index.html', context={'output': output}, )
-	#return HttpResponse("Still Working on this bud!!")
-
