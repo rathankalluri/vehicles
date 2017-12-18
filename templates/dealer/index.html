@@ -5,11 +5,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
-<!-- <script src="/static/jquery.cookie.js"> </script> -->
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script>
     $(document).ready(function(){
-
+	$('#mytable').DataTable();
     $('#a_year').attr({ "max" : (new Date()).getFullYear()
 
     });
@@ -103,19 +104,12 @@
             }else{
                     var cact = 0
             }
-        console.log(cact)
-        console.log($('#c_auto_id').val())
-        console.log($('#c_auto_man').val())
-        console.log($('#c_year').val())
-        console.log($('#c_dealer_id').val())
-
         //On modal click Update
 		//Update the table row AJAX
 		$.ajax({
 			type: 'POST',
 			url: "create_new/",
 			data: {
-				//'id': $('#a_id').val(),
 				'auto_id': $('#c_auto_id').val(),
 				'auto_man': $('#c_auto_man').val(),
 				'year':$('#c_year').val(),
@@ -148,7 +142,7 @@
         <div class="table-responsive">
 
 
-              <table id="mytable" class="table table-bordred table-striped">
+              <table id="mytable" class="table table-bordred table-striped tablesorter">
 
                    <thead>
 
