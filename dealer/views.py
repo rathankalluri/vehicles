@@ -58,3 +58,9 @@ def delete_new(requests):
 	if requests.method == "POST":
 		autos.objects.filter(id=requests.POST.get('id')).delete()
 		return HttpResponse("Successfully Deleted")
+	
+def detail(requests, dealer_id, active):
+	output = autos.objects.filter(dealer_id=dealer_id,active=active)
+	return render(requests, 'dealer/index.html', context={'output': output}, )
+	#return HttpResponse("Still Working on this bud!!")
+
